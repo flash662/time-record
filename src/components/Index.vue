@@ -3,10 +3,10 @@
         
         <div class="content">
             <div class="columns is-mobile" v-if="record.length <= 0">
-                <div class="column is-half is-offset-one-quarter">
+                <div class="column is-half is-offset-one-quarter center">
                     <i class="fa fa-5 fa-file-image-o empty"></i>
-                    <h1 class="empty center">Empty</h1>
-                    <p class="empty center">
+                    <h1 class="empty">Empty</h1>
+                    <p class="empty">
                         Tap <i class="fa fa-plus"></i> to add one
                     </p>
                 </div>
@@ -16,9 +16,9 @@
         <div class="tile is-ancestor" v-if="record.length">
             
             <div class="tile is-3" v-for="(data, index) in record">
-                <div class="tile is-parent">
+                <div class="tile is-parent" v-if="!data.deleted">
                     <article class="tile is-child notification is-info" @click="addTime(index)">
-                        <a class="delete" @click.stop="$parent.deleteType(index)"></a>
+                        <a class="delete" @click.stop="deleteType(index)"></a>
                         <p class="title">
                             {{data.name}}
                         </p>
@@ -90,6 +90,18 @@
           },
           onConfirm(value) {
             app.$store.commit('addType', value);
+          },
+        });
+      },
+      deleteType(index) {
+        const $this = this;
+        this.$store.commit('deleteType', index);
+        this.$snackbar.open({
+          message: 'Deleted',
+          actionText: 'Undo',
+          position: 'is-top',
+          onAction() {
+            $this.$store.commit('recoveryType', index);
           },
         });
       },
