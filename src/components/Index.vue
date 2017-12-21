@@ -2,7 +2,7 @@
     <section class="section">
         
         <div class="content">
-            <div class="columns is-mobile" v-if="record.length <= 0">
+            <div class="columns is-mobile" v-if="emptyRecord">
                 <div class="column is-half is-offset-one-quarter center">
                     <i class="fa fa-5 fa-file-image-o empty"></i>
                     <h1 class="empty">Empty</h1>
@@ -15,7 +15,7 @@
         
         <div class="tile is-ancestor" v-if="record.length">
             
-            <div class="tile is-3" v-for="(data, index) in record">
+            <div class="tile is-4" v-for="(data, index) in record">
                 <div class="tile is-parent" v-if="!data.deleted">
                     <article class="tile is-child notification is-info" @click="addTime(index)">
                         <a class="delete" @click.stop="deleteType(index)"></a>
@@ -31,18 +31,13 @@
                     </article>
                 </div>
             </div>
+            
         </div>
 
-        <nav class="navbar is-fixed-bottom has-shadow">
-            <div class="navbar-brand">
-                <div class="navbar-item" href="#" @click.prevent="addType">
-                    <button class="button is-primary">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-
-        </nav>
+        <button class="button is-rounded is-outlined is-large is-info add-type" @click="addType">
+            <i class="fa fa-plus"></i>
+        </button>
+        
     </section>
 </template>
 
@@ -61,6 +56,12 @@
     .fa.fa-5 {
         font-size: 12em;
     }
+    .add-type {
+        position: absolute;
+        bottom: 8%;
+        right: 5%;
+        border-radius: 50%;
+    }
 </style>
 
 <script>
@@ -69,6 +70,9 @@
     computed: {
       record() {
         return this.$store.state.record;
+      },
+      emptyRecord() {
+        return this.$store.getters.validRecords.length <= 0;
       },
     },
     methods: {
@@ -99,7 +103,6 @@
         this.$snackbar.open({
           message: 'Deleted',
           actionText: 'Undo',
-          position: 'is-top',
           onAction() {
             $this.$store.commit('recoveryType', index);
           },

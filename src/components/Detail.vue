@@ -55,7 +55,7 @@ export default {
       set(value) {
         const id = this.$route.params.id;
         this.$store.state.record[id].name = value;
-        this.$store.commit('save');
+        this.$store.dispatch('save');
       },
     },
   },
