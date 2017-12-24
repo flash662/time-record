@@ -23,7 +23,9 @@
                             {{data.name}}
                         </p>
                         <p class="subtitle">
-                            {{ lastTime(data.data) }}
+                            <span v-text="lastTime(data.data)"></span>
+                            <br>
+                            <span v-text="relativeTime(lastTime(data.data))"></span>
                             <router-link :to="{ name: 'Record', params: { id: index }}" @click.native.stop="" class="info">
                                 <i class="fa fa-2x fa-info-circle"></i>
                             </router-link>
@@ -65,6 +67,8 @@
 </style>
 
 <script>
+  import moment from 'moment';
+  
   export default {
     name: 'Dashboard',
     computed: {
@@ -81,6 +85,9 @@
           return Object.assign([], data).shift();
         }
         return 'empty record';
+      },
+      relativeTime(time) {
+        return moment(time).fromNow();
       },
       addTime(index) {
         this.$store.commit('addTime', index);
@@ -103,6 +110,7 @@
         this.$snackbar.open({
           message: 'Deleted',
           actionText: 'Undo',
+          queue: false,
           onAction() {
             $this.$store.commit('recoveryType', index);
           },

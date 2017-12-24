@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <button class="button is-info is-large" @click="addTime" style="border-radius: 50%; position:fixed; bottom: 10%; right: 5%;">
+      <button class="button is-outlined is-info is-large" @click="addTime" style="border-radius: 50%; position:fixed; bottom: 10%; right: 5%;">
         <i class="fa fa-plus"></i>
       </button>
 
